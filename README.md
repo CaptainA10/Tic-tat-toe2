@@ -70,7 +70,7 @@ class Board:
         Pass
 
 
-Example 2: TicTacToe Class (tic_tac_toe.py)
+Example : TicTacToe Class (tic_tac_toe.py)
 class TicTacToe:
     def __init__(self, player_factory):
         self.board = Board()
@@ -86,7 +86,95 @@ class TicTacToe:
         # Code to reset the game state
         pass
 
+Example of polymorphysime: The get_move method
 
+class Player: class HumanPlayer(Player):
+    def get_move(self, board):
+        pass
+
+class ComputerPlayer(Player):
+    def __init__(self, symbol):
+        self.symbol = symbol 
+
+    def get_move(self, board):
+        pass
+
+class HumanPlayer(Player):
+    def get_move(self, board):
+        pass
+
+class ComputerPlayer(Player):
+    def get_move(self, board):
+        pass
+
+Examole of Abstraction: 
+
+def show_game_over_message(func):
+    def wrapper(self, *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        if result:
+            self.show_message(result)
+    return wrapper
+
+Example of inherritence: The classes HumanPlayer and ComputerPlayer inherite from Player
+
+class Player:
+    def __init__(self, symbol):
+        self.symbol = symbol 
+
+    def get_move(self, board):
+        pass
+
+class HumanPlayer(Player):
+    def get_move(self, board):
+        pass
+
+class ComputerPlayer(Player):
+    def get_move(self, board):
+        pass
+
+Example of Encapsulation: self.cells  is be only used on this class and be ddispayed, udated etc...
+
+class Board: self.cells 
+    def __init__(self):
+        # Initialize the board with numbers representing empty cells
+        self.cells = [str(i) for i in range(1, 10)]
+
+    def display(self):
+        pass
+
+    def update(self, move, symbol):
+        pass
+
+    def available_moves(self):
+        pass
+
+    def is_winner(self, symbol):
+        pass
+
+    def is_full(self):
+        pass
+
+Example of  decorators: validate_move to show what kind of behavior is possible on the grid and
+show_game_over_message to show the message at the and of the game session. These are segleton decorators
+
+
+  def validate_move(func):
+    def wrapper(self, i, j):
+        button = self.buttons[i][j]
+        if button["text"] == "":
+            return func(self, i, j)
+        else:
+            messagebox.showwarning("Invalid Move", "This position is already occupied!")
+    return wrapper
+
+
+  def show_game_over_message(func):
+    def wrapper(self, *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        if result:
+            self.show_message(result)
+    return wrapper
 
 Meeting Objectives and Requirements
 
