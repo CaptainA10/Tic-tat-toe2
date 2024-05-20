@@ -15,7 +15,7 @@ In this project, we have implemented the tic-tac-toe game using the Python progr
 b. How to run the program?
 
 To run the program, ensure you have Python installed on your system. Then, simply execute the Python script using the following command in your terminal:
-```
+
 
 Make sure you are in the directory where the Python file is located. This will launch the game and open a graphical window where you can play tic-tac-toe.
 
@@ -86,28 +86,206 @@ class TicTacToe:
         # Code to reset the game state
         pass
 
-Example of polymorphysime: The get_move method
+Sure! Let's go through the key object-oriented programming (OOP) pillars with examples from your Tic Tac Toe game code, along with brief explanations on how each pillar is used.
 
-class Player: class HumanPlayer(Player):
-    def get_move(self, board):
-        pass
+About the usage of POO piliars:
 
-class ComputerPlayer(Player):
-    def __init__(self, symbol):
-        self.symbol = symbol 
+1. Classes and Objects
 
-    def get_move(self, board):
+Definition:
+- Class: A blueprint for creating objects that defines a set of attributes and methods.
+- Object: An instance of a class.
+
+Usage in the code:
+In the Tic Tac Toe game, classes are used to represent the game, the board, and players. Objects are instances of these classes created to start and manage the game.
+
+Code Example:
+
+
+class TicTacToe:
+    def __init__(self, player_factory):
+        self.board = Board()
+        self.players = [player_factory.create_player('X'), player_factory.create_player('O')]
+        self.current_player_idx = 0
+        self.root = tk.Tk()
+        self.root.title("Tic Tac Toe")
+
+# Creating objects (instances of the class)
+human_player_factory = HumanPlayerFactory()
+game = TicTacToe(human_player_factory)
+```
+
+Here, `TicTacToe` is a class, and `game` is an object (instance) of the `TicTacToe` class.
+
+2. Encapsulation and Access Control
+
+Definition:
+- Encapsulation: Bundling data with methods that operate on that data.
+- Access Control: Restricting access to certain components using access specifiers like private, protected, and public.
+
+Usage in the code:
+Encapsulation is used to hide the internal representation of the board and control access to it via methods.
+
+Code Example:
+
+
+class Board:
+    def __init__(self):
+        self.__grid = [['' for _ in range(3)] for _ in range(3)]  # Private attribute
+
+    def reset(self):
+        self.__grid = [['' for _ in range(3)] for _ in range(3)]
+
+    def get_grid(self):
+        return self.__grid
+
+    def set_cell(self, x, y, value):
+        if self.__grid[x][y] == '':
+            self.__grid[x][y] = value
+        else:
+            print("Cell already occupied")
+
+board = Board()
+board.set_cell(0, 0, 'X')
+print(board.get_grid())
+
+
+The `__grid` attribute is encapsulated within the `Board` class, and access to it is controlled through methods like `set_cell` and `get_grid`.
+
+3. Method Overloading and Overriding
+
+Definition:
+- Method Overloading: Defining multiple methods in a class with the same name but different parameters.
+- Method Overriding: Redefining a method in a subclass that is already defined in its superclass.
+
+Usage in the code:
+Method overriding is used to provide specific implementations for the `make_move` method in `HumanPlayer` and `ComputerPlayer` classes.
+
+Code Example
+
+
+class Player:
+    def make_move(self, board):
         pass
 
 class HumanPlayer(Player):
-    def get_move(self, board):
-        pass
+    def make_move(self, i, j, board):
+        if board.get_grid()[i][j] == '':
+            board.set_cell(i, j, self.symbol)
 
 class ComputerPlayer(Player):
-    def get_move(self, board):
+    def make_move(self, board):
+        for i in range(3):
+            for j in range(3):
+                if board.get_grid()[i][j] == '':
+                    board.set_cell(i, j, self.symbol)
+                    return
+
+human_player = HumanPlayer()
+computer_player = ComputerPlayer()
+
+
+In this example, `make_move` is overridden in both `HumanPlayer` and `ComputerPlayer` to provide specific behavior for each type of player.
+
+4. Composition and Aggregation
+
+Definition:
+- Composition: A strong form of association where the composed objects cannot exist independently.
+- Aggregation: A weaker form of association where the aggregated objects can exist independently.
+
+Usage in the code:
+Composition is used to indicate that a `TicTacToe` game consists of a `Board` and players, while aggregation is used to indicate that `PlayerFactory` and its subclasses create players that can exist independently of the game.
+
+Code Example:
+
+
+# Composition
+class TicTacToe:
+    def __init__(self, player_factory):
+        self.board = Board()  # Composition
+        self.players = [player_factory.create_player('X'), player_factory.create_player('O')]
+        self.current_player_idx = 0
+        self.root = tk.Tk()
+        self.root.title("Tic Tac Toe")
+
+# Aggregation
+class PlayerFactory:
+    def create_player(self, symbol):
         pass
 
-Examole of Abstraction: 
+class HumanPlayerFactory(PlayerFactory):
+    def create_player(self, symbol):
+        return HumanPlayer(symbol)
+
+class HumanPlayer:
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+# Here, HumanPlayerFactory and HumanPlayer exist independently but are used together in TicTacToe
+
+
+5. Polymorphism and Interfaces
+
+Definition:
+- Polymorphism: The ability of different objects to be treated as instances of the same class through a common interface.
+- Interfaces: A group of related methods with empty bodies.
+
+Usage in the code:
+Polymorphism is used to treat different types of players (human or computer) through a common interface defined by the `Player` class.
+
+**Code Example:**
+
+Polymorphism
+class Player:
+    def make_move(self, board):
+        pass
+
+class HumanPlayer(Player):
+    def make_move(self, board):
+        print("Human player makes a move")
+
+class ComputerPlayer(Player):
+    def make_move(self, board):
+        print("Computer player makes a move")
+
+players = [HumanPlayer(), ComputerPlayer()]
+
+for player in players:
+    player.make_move(None)  # Output will be different based on the type of player
+
+# Interface (abstract base class)
+from abc import ABC, abstractmethod
+
+class PlayerFactory(ABC):
+    @abstractmethod
+    def create_player(self, symbol):
+        pass
+
+class HumanPlayerFactory(PlayerFactory):
+    def create_player(self, symbol):
+        return HumanPlayer(symbol)
+
+class ComputerPlayerFactory(PlayerFactory):
+    def create_player(self, symbol):
+        return ComputerPlayer(symbol)
+```
+
+In this example, polymorphism allows us to use the `make_move` method on any `Player` object, regardless of whether it is a `HumanPlayer` or `ComputerPlayer`.
+
+6. Design Patterns
+
+Definition:
+- Design patterns are typical solutions to common problems in software design. They are like blueprints that can be customized to solve particular design problems in your code.
+
+Decorator
+
+Decorator: Allows behavior to be added to an individual object, dynamically, without affecting the behavior of other objects from the same class.
+
+Usage in the code:
+A decorator is used to add functionality for showing game-over messages.
+
+Code Example:
+
 
 def show_game_over_message(func):
     def wrapper(self, *args, **kwargs):
@@ -116,66 +294,23 @@ def show_game_over_message(func):
             self.show_message(result)
     return wrapper
 
-Example of inherritence: The classes HumanPlayer and ComputerPlayer inherite from Player
-
-class Player:
-    def __init__(self, symbol):
-        self.symbol = symbol 
-
-    def get_move(self, board):
+class TicTacToe:
+    def __init__(self, player_factory):
+        # Initialization code...
         pass
 
-class HumanPlayer(Player):
-    def get_move(self, board):
+    @show_game_over_message
+    def check_winner(self):
+        # Code to check for a winner
         pass
 
-class ComputerPlayer(Player):
-    def get_move(self, board):
-        pass
-
-Example of Encapsulation: self.cells  is be only used on this class and be ddispayed, udated etc...
-
-class Board: self.cells 
-    def __init__(self):
-        # Initialize the board with numbers representing empty cells
-        self.cells = [str(i) for i in range(1, 10)]
-
-    def display(self):
-        pass
-
-    def update(self, move, symbol):
-        pass
-
-    def available_moves(self):
-        pass
-
-    def is_winner(self, symbol):
-        pass
-
-    def is_full(self):
-        pass
-
-Example of  decorators: validate_move to show what kind of behavior is possible on the grid and
-show_game_over_message to show the message at the and of the game session. These are segleton decorators
+    def show_message(self, message):
+        messagebox.showinfo("Game Over", message)
 
 
-  def validate_move(func):
-    def wrapper(self, i, j):
-        button = self.buttons[i][j]
-        if button["text"] == "":
-            return func(self, i, j)
-        else:
-            messagebox.showwarning("Invalid Move", "This position is already occupied!")
-    return wrapper
+In this example, the `show_game_over_message` decorator adds the functionality to display a message when the game is over.
 
-
-  def show_game_over_message(func):
-    def wrapper(self, *args, **kwargs):
-        result = func(self, *args, **kwargs)
-        if result:
-            self.show_message(result)
-    return wrapper
-
+By using these pillars of OOP and design patterns, the Tic Tac Toe game code is structured, maintainable, and extendable.
 Meeting Objectives and Requirements
 
 The program effectively meets the defined objectives and functional requirements by implementing the core functionalities of a tic-tac-toe game, including:
