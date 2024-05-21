@@ -1,5 +1,5 @@
 import unittest
-from tictactoe import Board, TicTacToe, HumanPlayerFactory
+from tic import Board, TicTacToe, HumanPlayerFactory
 
 class TestTicTacToe(unittest.TestCase):
 
